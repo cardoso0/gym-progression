@@ -1,24 +1,32 @@
-export const trainings = [
+export type Exercise = {
+  id: string;
+  name: string;
+};
+
+export type Training = {
+  id: string;
+  name: string;
+  group: string;
+  mainExercises: Exercise[];
+  extraExercises: Exercise[];
+};
+
+export const mockTrainings: Training[] = [
   {
     id: "a",
     name: "Treino A",
     group: "Peito",
     mainExercises: [
-      { id: "supino", name: "Supino Reto" },
-      { id: "inclinado", name: "Supino Inclinado" },
+      { id: "1", name: "Supino Reto" },
+      { id: "2", name: "Supino Inclinado" },
     ],
-    extraExercises: [
-      { id: "crucifixo", name: "Crucifixo com Halteres" },
-    ],
+    extraExercises: [{ id: "3", name: "Crucifixo" }],
   },
   {
     id: "b",
     name: "Treino B",
     group: "Costas",
-    mainExercises: [
-      { id: "barra", name: "Barra Fixa" },
-      { id: "remada", name: "Remada Curvada" },
-    ],
-    extraExercises: [],
+    mainExercises: [{ id: "4", name: "Puxada Frente" }],
+    extraExercises: [{ id: "5", name: "Remada Curvada" }],
   },
 ];
