@@ -1,6 +1,7 @@
 import type { Training } from "../data/trainings";
 import { mockTrainings } from "../data/trainings";
 import { useState } from "react";
+import { TrainingSelector } from "./components/TrainingSelector";
 
 function Trainings() {
   const [trainings, setTrainings] = useState<Training[]>(mockTrainings);
@@ -8,23 +9,24 @@ function Trainings() {
 
   // UI de quando nenhum treino está selecionado
   if (!selectedTraining) {
-    return (
-      <div className="p-4">
-        <h1 className="text-xl font-bold mb-4">Meus Treinos</h1>
+    return <TrainingSelector />
+    // (
+    //   <div className="p-4">
+    //     <h1 className="text-xl font-bold mb-4">Meus Treinos</h1>
 
-        <ul className="space-y-2">
-          {trainings.map((training) => (
-            <li
-              key={training.id}
-              onClick={() => setSelectedTraining(training)}
-              className="bg-gray-100 rounded p-4 shadow hover:bg-gray-200 cursor-pointer text-[#000]"
-            >
-              <span className="font-semibold">{training.name}</span> – {training.group}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
+    //     <ul className="space-y-2">
+    //       {trainings.map((training) => (
+    //         <li
+    //           key={training.id}
+    //           onClick={() => setSelectedTraining(training)}
+    //           className="bg-gray-100 rounded p-4 shadow hover:bg-gray-200 cursor-pointer text-[#000]"
+    //         >
+    //           <span className="font-semibold">{training.name}</span> – {training.group}
+    //         </li>
+    //       ))}
+    //     </ul>
+    //   </div>
+    // );
   }
 
   // UI de treino selecionado
