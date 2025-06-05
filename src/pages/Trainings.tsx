@@ -1,67 +1,66 @@
-import type { Training } from "../data/trainings";
-import { mockTrainings } from "../data/trainings";
 import { useState } from "react";
-import { TrainingSelector } from "./components/TrainingSelector";
+import { CreateTrainingForm } from "../components/CreateTrainingForm";
+import { TrainingSelector } from "../components/TrainingSelector";
+import { TrainingEditor } from "../components/TrainingEditor";
 
-function Trainings() {
-  const [trainings, setTrainings] = useState<Training[]>(mockTrainings);
-  const [selectedTraining, setSelectedTraining] = useState<Training | null>(null);
+interface Exercise {
+  name: string;
+}
 
-  // UI de quando nenhum treino está selecionado
-  if (!selectedTraining) {
-    return <TrainingSelector />
-    // (
-    //   <div className="p-4">
-    //     <h1 className="text-xl font-bold mb-4">Meus Treinos</h1>
+interface Training {
+  name: string;
+  mainExercises: Exercise[];
+  extraExercises: Exercise[];
+}
 
-    //     <ul className="space-y-2">
-    //       {trainings.map((training) => (
-    //         <li
-    //           key={training.id}
-    //           onClick={() => setSelectedTraining(training)}
-    //           className="bg-gray-100 rounded p-4 shadow hover:bg-gray-200 cursor-pointer text-[#000]"
-    //         >
-    //           <span className="font-semibold">{training.name}</span> – {training.group}
-    //         </li>
-    //       ))}
-    //     </ul>
-    //   </div>
-    // );
-  }
+export default function TrainingsPage() {
+  const [trainings, setTrainings] = useState<Training[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
 
-  // UI de treino selecionado
+  const handleCreateTraining = (name: string) => {
+    const alreadyExists = trainings.some((t) => t.name === name);
+    if (!alreadyExists) {
+      const newTraining: Training = {
+        name,
+        mainExercises: [],
+        extraExercises: [],
+      };
+      setTrainings((prev) => [...prev, newTraining]);
+    }
+  };
+
+  const selectedTraining = trainings.find((t) => t.name === selected);
+
   return (
-    <div className="p-4">
-      <button
-        onClick={() => setSelectedTraining(null)}
-        className="mb-4 text-sm text-blue-600 hover:underline"
-      >
-        ← Voltar
-      </button>
+    <div className="max-w-md mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Meus Treinos</h1>
 
-      <h2 className="text-xl font-bold mb-2">
-        {selectedTraining.name} – {selectedTraining.group}
-      </h2>
+      <CreateTrainingForm onCreate={handleCreateTraining} />
 
-      <div className="mb-4">
-        <h3 className="font-semibold">Exercícios principais</h3>
-        <ul className="list-disc list-inside">
-          {selectedTraining.mainExercises.map((ex) => (
-            <li key={ex.id}>{ex.name}</li>
-          ))}
-        </ul>
-      </div>
+      {!selected ? (
+        <TrainingSelector
+          trainings={trainings}
+          selected={selected}
+          onSelect={(name) => setSelected(name)}
+        />
+      ) : (
+        <div className="mt-4">
+          <button
+            className="text-sm text-blue-600 underline mb-2"
+            onClick={() => setSelected(null)}
+          >
+            ← Voltar aos treinos
+          </button>
 
-      <div>
-        <h3 className="font-semibold">Exercícios extras</h3>
-        <ul className="list-disc list-inside">
-          {selectedTraining.extraExercises.map((ex) => (
-            <li key={ex.id}>{ex.name}</li>
-          ))}
-        </ul>
-      </div>
+          {selectedTraining && (
+            <TrainingEditor
+              trainingName={selectedTraining.name}
+              mainExercises={selectedTraining.mainExercises}
+              extraExercises={selectedTraining.extraExercises}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }
-
-export default Trainings;
