@@ -15,19 +15,26 @@ type Props = {
 };
 
 export function TrainingSelector({ trainings, selected, onSelect }: Props) {
+
   return (
     <div className="mt-6 space-y-2">
-      {Object.keys(trainings).map((name) => (
-        <button
-          key={name}
-          onClick={() => onSelect(name)}
-          className={`w-full p-3 rounded text-left text-[#000] ${
-            selected === name ? "bg-blue-500 text-white" : "bg-gray-100"
-          }`}
-        >
-          Treino {name}
-        </button>
-      ))}
+      {trainings.map((training) => {
+        console.log(training)
+        return (
+          <button
+            key={training.name}
+            onClick={() => onSelect(training.name)}
+            className={`
+              w-full p-3 rounded text-left text-[#000] 
+              ${selected === training.name 
+                ? "bg-blue-500 text-white" 
+                : "bg-gray-100"
+              }`}
+          >
+            {training.name}
+          </button>
+        )
+      })}
     </div>
   );
 }
