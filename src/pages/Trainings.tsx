@@ -35,7 +35,7 @@ export default function TrainingsPage() {
     <div className="max-w-md mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Meus Treinos</h1>
 
-      <CreateTrainingForm onCreate={handleCreateTraining} />
+      {!selected && (<CreateTrainingForm onCreate={handleCreateTraining} /> )}
 
       {!selected ? (
         <TrainingSelector
