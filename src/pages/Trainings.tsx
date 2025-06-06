@@ -29,6 +29,13 @@ export default function TrainingsPage() {
     }
   };
 
+  const handleDeleteTraining = (name: string) => {
+    setTrainings(prev => prev.filter(t => t.name !== name));
+    if (selected === name) {
+      setSelected(null); // desfaz seleção se foi deletado
+    }
+  };
+
   const selectedTraining = trainings.find((t) => t.name === selected);
 
   return (
@@ -42,6 +49,7 @@ export default function TrainingsPage() {
             trainings={trainings}
             selected={selected}
             onSelect={(name) => setSelected(name)}
+            onDelete={handleDeleteTraining}
           />
         </>
       ) : (
