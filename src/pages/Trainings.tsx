@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CreateTrainingForm } from "../components/CreateTrainingForm";
 import { TrainingSelector } from "../components/TrainingSelector";
 import { TrainingEditor } from "../components/TrainingEditor";
+import { BtnSettings, ModalSettings } from "../components/ModalSettings";
 
 interface Exercise {
   name: string;
@@ -16,6 +17,7 @@ interface Training {
 export default function TrainingsPage() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
+  const [isSettingsOpen, setSettingsOpen] = useState<boolean>(false);
 
   const handleCreateTraining = (name: string) => {
     const alreadyExists = trainings.some((t) => t.name === name);
@@ -32,7 +34,7 @@ export default function TrainingsPage() {
   const handleDeleteTraining = (name: string) => {
     setTrainings(prev => prev.filter(t => t.name !== name));
     if (selected === name) {
-      setSelected(null); // desfaz seleção se foi deletado
+      setSelected(null);
     }
   };
 
@@ -40,7 +42,16 @@ export default function TrainingsPage() {
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Meus Treinos</h1>
+      {/* <ModalSettings /> */}
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">Meus Treinos</h1>
+        <BtnSettings setValue={setSettingsOpen}/>
+        <ModalSettings
+          isOpen={isSettingsOpen}
+          onClose={() => setSettingsOpen(false)}
+        />
+      </div>
+
 
       {!selected ? (
         <>
